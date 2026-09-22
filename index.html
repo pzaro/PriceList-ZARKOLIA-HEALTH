@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="el">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Συνταγολόγιο Zarkolia Health</title>
+<style>
+  /* Οθόνη: προεπισκόπηση + κουμπί */
+  html,body{margin:0;padding:0;background:#eef2f6;font-family:Arial,Helvetica,sans-serif}
+  .bar{position:sticky;top:0;z-index:5;background:#203f5d;color:#fff;text-align:center;padding:12px}
+  .bar button{background:#fff;color:#203f5d;border:0;border-radius:8px;padding:11px 20px;
+    font:bold 15px Arial,Helvetica,sans-serif;cursor:pointer}
+  .bar small{display:block;margin-top:6px;font-size:12px;opacity:.85}
+  .sheet{width:148mm;max-width:100%;margin:16px auto;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.15)}
+  .sheet img{display:block;width:100%;height:auto}
+
+  /* Εκτύπωση: μόνο το συνταγολόγιο, A5 χωρίς περιθώρια */
+  @page{size:A5 portrait;margin:0}
+  @media print{
+    html,body{background:#fff}
+    .bar{display:none}
+    .sheet{width:148mm;height:210mm;margin:0;box-shadow:none;overflow:hidden}
+    .sheet img{width:148mm;height:210mm;object-fit:contain;
+      -webkit-print-color-adjust:exact;print-color-adjust:exact}
+  }
+</style>
+</head>
+<body>
+  <div class="bar">
+    <button type="button" onclick="window.print()">🖨 Εκτύπωση συνταγολογίου (A5)</button>
+    <small>Στο παράθυρο εκτύπωσης: Μέγεθος χαρτιού A5 · Κλίμακα 100% · ή «Αποθήκευση ως PDF»</small>
+  </div>
+
+  <div class="sheet">
+    <img id="rx" src="https://raw.githubusercontent.com/pzaro/zarkolia-images/main/Prescription%20Neo.jpg"
+         alt="Συνταγολόγιο Zarkolia Health">
+  </div>
+
+<script>
+  // ?auto=1 → αυτόματη εκτύπωση μόλις φορτώσει η εικόνα
+  (function(){
+    if(new URLSearchParams(location.search).get("auto")!=="1") return;
+    var img=document.getElementById("rx"), done=false;
+    function go(){ if(done) return; done=true; setTimeout(function(){ window.print(); }, 300); }
+    if(img.complete && img.naturalWidth) go(); else img.addEventListener("load", go);
+  })();
+</script>
+</body>
+</html>
